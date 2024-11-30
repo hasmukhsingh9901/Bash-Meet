@@ -3,9 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import { corsOptions } from "./config/corsConfig.js";
+import connectDB from "./database/db.js";
 
 dotenv.config({path:'./.env'});
 
+connectDB()
 
 const app = express();
 
