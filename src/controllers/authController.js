@@ -116,4 +116,48 @@ const refreshAccessToken = async (req, res) => {
   }
 }
 
-export { signUp, signIn,refreshAccessToken };
+const verifyToken = async (req,res,next) => {
+  try {
+    if(!req.user){
+      return res.status(401).json({ 
+        message: 'Invalid or expired token',
+        isValid: false 
+      });
+    }
+    const userDetails = await User.findById(req.user.id).select({
+      password:0,
+      refreshtoken:0,
+      // forgotPasswordToken:0,
+      // forgotPasswordTokenExpiry:0
+    });
+
+    if(!userDetails){
+      return res.status(401).json({ 
+        message: 'Invalid or expired token',
+        isValid: false 
+      });
+    }
+    if(userDetails.isBlocked){
+      return res.status(401).json({
+        message: 'User is blocked',
+        isValid: false
+      });
+    }
+
+    res.status(200).json({
+      message: 'Token is valid',
+      isValid: true,
+      user:{
+        id:userDetails._id,
+        name:userDetails.name,
+        email:userDetails.email,
+        isAdmin:userDetails.isAdmin
+      }
+    })
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+  
+}
+
+export { signUp, signIn,refreshAccessToken ,verifyToken};
