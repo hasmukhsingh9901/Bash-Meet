@@ -5,6 +5,8 @@ import morgan from "morgan";
 import { corsOptions } from "./config/corsConfig.js";
 import connectDB from "./database/db.js";
 
+import authRoute from "./routes/authRoutes.js";
+
 dotenv.config({path:'./.env'});
 
 connectDB()
@@ -22,6 +24,8 @@ app.use(express.static("public"));
 app.get("/", (req, res) => { 
     res.send("Hello World!");
 });
+
+app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);  
