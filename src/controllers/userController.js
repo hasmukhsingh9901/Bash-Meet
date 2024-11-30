@@ -3,8 +3,8 @@ import User from "../models/userModel.js";
 
 const addBash = async (req, res) => {
   try {
-    const { userId, image, message } = req.body;
-    const bash = await Bash.create({ userId, image, message });
+    const { userId, image, contact,currentLocation,currentOrganization} = req.body;
+    const bash = await Bash.create({ userId, image, contact,currentLocation,currentOrganization });
     res.status(200).json({ bash });
   } catch (error) {
     if (error.name === "ValidationError") {
@@ -30,7 +30,11 @@ const fetchBash = async (req, res) => {
       },
       {
         $project: {
-          message: 1,
+          contact: 1,
+          currentLocation: 1,
+          currentOrganization: 1,
+          date: 1,
+
           userDetails: {
             name: 1,
             email: 1,
