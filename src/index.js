@@ -6,6 +6,7 @@ import { corsOptions } from "./config/corsConfig.js";
 import connectDB from "./database/db.js";
 
 import authRoute from "./routes/authRoutes.js";
+import bashRoute from "./routes/userRoutes.js";
 
 dotenv.config({path:'./.env'});
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoute);
+app.use("/api/bash", bashRoute);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);  
